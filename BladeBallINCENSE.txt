@@ -1,0 +1,62 @@
+--Services
+Players = game:GetService("Players")
+RunService = game:GetService("RunService")
+ReplicatedStorage = game:GetService("ReplicatedStorage")
+MarketplaceService = game:GetService("MarketplaceService")
+TweenService = game:GetService("TweenService")
+UserInputService = game:GetService("UserInputService")
+VirtualInputManager = game:GetService("VirtualInputManager")
+TeleportService = game:GetService("TeleportService")
+Stats = game:GetService("Stats")
+
+--Variables
+LocalPlayer = Players.LocalPlayer
+Backpack = LocalPlayer.Backpack
+Mouse = LocalPlayer:GetMouse()
+
+--Functions
+function GetDistance(p1,p2)
+    local Distance = math.round((p1.Position - p2.Position).magnitude)
+    return Distance
+end
+
+function GetGameName()
+	return MarketplaceService:GetProductInfo(game.PlaceId).Name
+end
+
+function GetClosestPlayer(distance,from,to)
+	for i,v in pairs(Players:GetPlayers()) do
+	if v.Name ~= LocalPlayer.Name then
+		if v.Character and v.Character:FindFirstChild(to) then
+			local Target = v.Character:FindFirstChild(to)
+ 	 		if GetDistance(from,Target) <= distance then
+				return v.Character
+end
+end
+end
+end
+end
+
+function getPlayer(ok)
+	local player = {}
+	if ok:lower() == "all" then
+		for i ,v in pairs(game.Players:GetPlayers()) do
+			if v.Name ~= LocalPlayer.Name then
+				table.insert(player, v)
+			end
+		end
+	elseif ok:lower() == "me" then
+		for i ,v in pairs(game.Players:GetPlayers()) do
+			if v.Name == LocalPlayer.Name then
+				table.insert(player, v)
+			end
+		end
+	else
+		for i ,v in pairs(game.Players:GetPlayers()) do
+			if v.Name:lower():sub(1, #ok) == ok:lower() then
+				table.insert(player, v)
+			end
+		end
+	end
+	return player
+end
